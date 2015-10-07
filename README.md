@@ -24,9 +24,6 @@ Python Version: 2.7.X
 * requests>=2.4.3
 
 
-
-
-
 ##Installation instructions
   1.  Download the zip file(s) to your local hard disc.
   2.  If there is an RTSM package, navigate to 
