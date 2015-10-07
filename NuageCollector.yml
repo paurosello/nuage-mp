@@ -1,0 +1,22 @@
+---
+application: Nuage_Alcatel_Lucent
+domain: Nuage
+description: Monitors Topology and events from Nuage
+script: NuageCollector.pm
+author: Pau Rosello <paur@hpe.com>
+generate_availability: false
+#in case 'interval' is not mentioned, it will be set to 'High' by default
+inerval: High
+---
+vsd_username: vsd_username
+vsd_password: vsd_password
+vsd_enterprise: vsd_enterprise
+vsd_api_version: 3.0
+vsd_api_url: https://X.X.X.X:8443
+---
+# vsd_username: string, Username with API access enable
+# vsd_password: password, Password for suplied username
+# vsd_enterprise: string, Enterprise
+# vsd_api_version: string, API version ex: 3.0, 3.2
+# vsd_api_url: string, API URL including protocol and port ex: https://10.3.175.7:8443
+---
