@@ -49,19 +49,18 @@ sub topology
 	}
 	else
 	{ 
-		$vsd_username = $config->[1]->{vsd_username};
-		$vsd_enterprise = $config->[1]->{vsd_enterprise};
-		$vsd_password = $config->[1]->{vsd_password};
-		$vsd_api_version = $config->[1]->{vsd_api_version};
-		$vsd_api_url = $config->[1]->{vsd_api_url};
+		$vsd_username = "";
+		$vsd_enterprise = "";
+		$vsd_password = "";
+		$vsd_api_version =  "";
+		$vsd_api_url = "";
 	}
 	
-	$self->log($self->DEBUG,  "##### vsd_username is       : $vsd_username");
-	$self->log($self->DEBUG,  "##### vsd_password is        : ********");
-	$self->log($self->DEBUG,  "##### vsd_enterprise is     : $vsd_enterprise");
-	$self->log($self->DEBUG,  "##### vsd_enterprise is   : $vsd_enterprise");
-	$self->log($self->DEBUG,  "##### vsd_api_version is      : $vsd_api_version");
-	$self->log($self->DEBUG,  "##### vsd_api_url is     : $vsd_api_url");
+	$self->log($self->INFO,  "##### vsd_username is       : $vsd_username");
+	$self->log($self->INFO,  "##### vsd_password is        : ********");
+	$self->log($self->INFO,  "##### vsd_enterprise is     : $vsd_enterprise");
+	$self->log($self->INFO,  "##### vsd_api_version is      : $vsd_api_version");
+	$self->log($self->INFO,  "##### vsd_api_url is     : $vsd_api_url");
   
 	my @result = ();
 
@@ -70,9 +69,10 @@ sub topology
 	$new_ci->{name}    = "NuageTopology";
 	push(@result, $new_ci);
 		
+	my $command = "/var/opt/OV/bin/instrumentation/vsd list  --username $vsd_username --password  $vsd_password --api $vsd_api_url --enterprise  $vsd_enterprise --version $vsd_api_version --json";
 	
-	my $enterprises = `/var/opt/OV/bin/instrumentation/vsd list enterprises`;
-	$self->log($self->DEBUG, $enterprises);
+	my $enterprises = `$command  enterprises`;
+	$self->log($self->INFO, $enterprises);
 	
 	my @decoded_enterprises = @{decode_json($enterprises)};
 
@@ -101,7 +101,7 @@ sub topology
 		push(@result, $new_ci);
 	} 
 	
-	my $domains = `/var/opt/OV/bin/instrumentation/vsd list domains`;
+	my $domains = `$command domains`;
 	$self->log($self->DEBUG, $domains);
 	
 	my @decoded_domains = @{decode_json($domains)};
@@ -135,7 +135,7 @@ sub topology
 		push(@result, $new_ci);
 	} 
 	
-	my $zones = `/var/opt/OV/bin/instrumentation/vsd list zones`;
+	my $zones = `$command zones`;
 	$self->log($self->DEBUG, $zones);
 	
 	my @decoded_zones = @{decode_json($zones)};
@@ -167,7 +167,7 @@ sub topology
 		push(@result, $new_ci);
 	}
 	
-	my $subnets = `/var/opt/OV/bin/instrumentation/vsd list subnets`;
+	my $subnets = `$command subnets`;
 	$self->log($self->DEBUG, $subnets);
 	
 	my @decoded_subnets = @{decode_json($subnets)};
@@ -219,23 +219,23 @@ sub getOstCfg()
   my $template = new OvParam::Template();
   $template->Load('Nuage_Alcatel_Lucent_Configuration', "configfiletmpl");
 
-  my $vsd_username_param = $template->GetSimpleParameter("vsd_username");
+  my $vsd_username_param = $template->GetSimpleParameter("VSD_USERNAME");
   my $vsd_username = $vsd_username_param->GetValue();
   $ost_cfg{vsd_username} = $vsd_username;
 
-  my $vsd_password_param = $template->GetSimpleParameter("vsd_password");
+  my $vsd_password_param = $template->GetSimpleParameter("VSD_PASSWORD");
   my $vsd_password = $vsd_password_param->GetValue();
   $ost_cfg{vsd_password} = $vsd_password;
 
-  my $vsd_enterprise_param = $template->GetSimpleParameter("vsd_enterprise");
+  my $vsd_enterprise_param = $template->GetSimpleParameter("VSD_ENTERPRISE");
   my $vsd_enterprise = $vsd_enterprise_param->GetValue();
   $ost_cfg{vsd_enterprise} = $vsd_enterprise;
 
-  my $vsd_api_version_param = $template->GetSimpleParameter("vsd_api_version");
+  my $vsd_api_version_param = $template->GetSimpleParameter("VSD_API_VERSION");
   my $vsd_api_version = $vsd_api_version_param->GetValue();
   $ost_cfg{vsd_api_version} = $vsd_api_version;
   
-  my $vsd_api_url_param = $template->GetSimpleParameter("vsd_api_url");
+  my $vsd_api_url_param = $template->GetSimpleParameter("VSD_API_URL");
   my $vsd_api_url = $vsd_api_url_param->GetValue();
   $ost_cfg{keystone_purl} = $vsd_api_url;
 
