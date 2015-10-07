@@ -69,7 +69,7 @@ sub topology
 	$new_ci->{name}    = "NuageTopology";
 	push(@result, $new_ci);
 		
-	my $command = "/var/opt/OV/bin/instrumentation/vsd list  --username $vsd_username --password  $vsd_password --api $vsd_api_url --enterprise  $vsd_enterprise --version $vsd_api_version --json";
+	my $command = "vsd list  --username $vsd_username --password  $vsd_password --api $vsd_api_url --enterprise  $vsd_enterprise --version $vsd_api_version --json";
 	
 	my $enterprises = `$command  enterprises`;
 	$self->log($self->INFO, $enterprises);
